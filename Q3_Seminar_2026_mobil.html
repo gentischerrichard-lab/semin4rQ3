@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tassi × Hernádi — Q3 Seminar 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0F1E3D; --navy-light:#1E3260;
+  --magenta:#E91E8C; --teal:#00C4A7;
+  --white:#FFFFFF;
+  --muted:rgba(255,255,255,0.55); --dim:rgba(255,255,255,0.30);
+  --card:rgba(255,255,255,0.05); --border:rgba(255,255,255,0.09);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);font-size:15px;line-height:1.6;}
+
+/* ── NAV ── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(15,30,61,0.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;
+}
+.nav-brand{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;}
+.nav-brand em{color:var(--magenta);font-style:normal;}
+.nav-links{display:flex;gap:4px;}
+.nav-links a{
+  font-size:11px;font-weight:500;color:var(--muted);
+  text-decoration:none;padding:5px 10px;border-radius:100px;
+  border:1px solid transparent;transition:all .2s;white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:var(--teal);border-color:rgba(0,196,167,0.3);background:rgba(0,196,167,0.08);
+}
+
+/* ── SECTIONS ── */
+.section{padding:40px 20px;position:relative;overflow:hidden;}
+.section::before{
+  content:'';position:absolute;top:-150px;right:-150px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(233,30,140,0.10) 0%,transparent 65%);
+  pointer-events:none;
+}
+.section::after{
+  content:'';position:absolute;bottom:-100px;left:-100px;
+  width:350px;height:350px;
+  background:radial-gradient(circle,rgba(0,196,167,0.08) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+/* ── COVER ── */
+.cover{min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding:40px 24px 36px;}
+.cover-deco{position:absolute;right:-40px;top:60px;opacity:0.18;pointer-events:none;}
+.display-title{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(52px,14vw,88px);line-height:0.92;
+  letter-spacing:-0.02em;position:relative;z-index:2;
+}
+.display-title .accent{color:var(--magenta);}
+.meta-row{display:flex;gap:0;position:relative;z-index:2;margin-top:32px;}
+.meta-item{flex:1;}
+.meta-item+.meta-item{border-left:1px solid var(--border);padding-left:20px;}
+.meta-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);margin-bottom:3px;}
+.meta-value{font-family:'Syne',sans-serif;font-weight:600;font-size:16px;}
+.badge{
+  display:inline-block;
+  background:rgba(0,196,167,0.10);border:1px solid rgba(0,196,167,0.28);
+  color:var(--teal);font-size:11px;font-weight:500;
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:5px 14px;border-radius:100px;
+}
+
+/* ── PAGE TITLES ── */
+.page-header{position:relative;z-index:2;margin-bottom:6px;}
+.page-title{font-family:'Syne',sans-serif;font-weight:700;font-size:24px;letter-spacing:-0.01em;}
+.page-sub{color:var(--muted);font-size:11px;letter-spacing:0.07em;text-transform:uppercase;margin-top:3px;margin-bottom:20px;}
+
+/* ── MEALS BAR ── */
+.meals{
+  display:flex;flex-wrap:wrap;gap:8px 16px;
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:10px;padding:12px 16px;margin-bottom:20px;
+  position:relative;z-index:2;
+}
+.meal{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+.meal strong{color:var(--white);font-weight:500;}
+
+/* ── TRACK ACCORDION ── */
+.track{
+  border-radius:12px;overflow:hidden;margin-bottom:10px;
+  position:relative;z-index:2;
+}
+.track-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;cursor:pointer;user-select:none;
+  background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:12px;transition:background .2s;
+}
+.track-head:hover{background:rgba(255,255,255,0.07);}
+.track-head.open{border-radius:12px 12px 0 0;border-bottom-color:transparent;}
+.track-head-left{display:flex;align-items:center;gap:10px;}
+.tdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.track-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;}
+.track-sub{font-size:11px;color:var(--dim);margin-top:1px;}
+.chevron{color:var(--dim);font-size:14px;transition:transform .25s;}
+.track-head.open .chevron{transform:rotate(180deg);}
+
+.track-body{
+  display:none;
+  border:1px solid var(--border);border-top:none;
+  border-radius:0 0 12px 12px;
+  overflow:hidden;
+}
+.track-body.open{display:block;}
+
+/* ── SESSION CARDS ── */
+.session{
+  display:flex;gap:12px;padding:12px 16px;
+  border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,0.02);
+}
+.session:last-child{border-bottom:none;}
+.session-time{
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:600;
+  color:var(--dim);white-space:nowrap;min-width:76px;padding-top:2px;
+}
+.session-content{}
+.session-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:2px;}
+.session-speaker{font-size:11px;color:var(--muted);}
+
+.session.shared{
+  background:rgba(233,30,140,0.05);
+  border-left:3px solid var(--magenta);
+}
+.session.shared .session-title{color:var(--magenta);font-family:'Syne',sans-serif;font-weight:700;}
+
+.session.highlight-teal{background:rgba(0,196,167,0.05);border-left:3px solid var(--teal);}
+.session.highlight-teal .session-title{color:var(--teal);font-weight:600;}
+
+/* ── EVENING CARDS ── */
+.eve-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;position:relative;z-index:2;}
+.eve-card{border-radius:11px;padding:16px;}
+.eve-teal{background:rgba(0,196,167,0.07);border:1px solid rgba(0,196,167,0.2);}
+.eve-mag {background:rgba(233,30,140,0.07);border:1px solid rgba(233,30,140,0.2);}
+.eve-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+.eve-name{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:4px;}
+.eve-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.tip-box{margin-top:10px;background:rgba(255,184,0,0.07);border:1px solid rgba(255,184,0,0.2);border-radius:8px;padding:8px 11px;font-size:11px;color:#FFB800;}
+
+/* ── DAY 2 TRÉNING ── */
+.trening-card{
+  background:rgba(0,196,167,0.06);border:1px solid rgba(0,196,167,0.18);
+  border-radius:12px;padding:20px;margin-top:14px;position:relative;z-index:2;
+}
+.trening-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;}
+.trening-title{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:8px;}
+.trening-desc{font-size:13px;color:var(--muted);line-height:1.65;}
+
+.block-row{
+  display:flex;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--border);position:relative;z-index:2;
+}
+.block-row:last-child{border-bottom:none;}
+.block-time{font-family:'Syne',sans-serif;font-size:11px;font-weight:600;color:var(--dim);min-width:96px;}
+.block-content{flex:1;}
+.block-title{font-size:13px;font-weight:500;color:var(--white);}
+.block-break{font-size:12px;color:var(--dim);font-style:italic;}
+
+/* ── GUEST ── */
+.guest-card{
+  background:rgba(233,30,140,0.06);border:1px solid rgba(233,30,140,0.16);
+  border-radius:14px;padding:22px;position:relative;z-index:2;margin-bottom:10px;
+}
+.guest-name{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;margin-bottom:3px;}
+.guest-role{color:var(--teal);font-size:13px;font-weight:500;margin-bottom:12px;}
+.guest-bio{font-size:13px;color:var(--muted);line-height:1.7;}
+.guest-badges{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.gbadge{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);
+  border-radius:8px;padding:8px 12px;font-size:10px;text-align:center;
+}
+.gbadge-t{font-weight:600;font-size:11px;color:var(--white);margin-bottom:2px;}
+.gbadge-s{color:var(--muted);}
+
+/* ── PRICING ── */
+.pricing-section{position:relative;z-index:2;}
+.pricing-block{margin-bottom:28px;}
+.pricing-title{font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:3px;}
+.pricing-sub{font-size:11px;color:var(--muted);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:14px;}
+.svc-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.svc{border-radius:100px;padding:5px 13px;font-size:11px;font-weight:500;}
+.svc-t{background:rgba(0,196,167,0.09);border:1px solid rgba(0,196,167,0.2);color:var(--teal);}
+.svc-m{background:rgba(233,30,140,0.08);border:1px solid rgba(233,30,140,0.2);color:var(--magenta);}
+.total-line{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;}
+.total-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;}
+.total-amt{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:7px;}
+.pc{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:13px 8px;text-align:center;
+}
+.pc.hi{background:rgba(0,196,167,0.07);border-color:rgba(0,196,167,0.22);}
+.pc.red{background:rgba(233,30,140,0.07);border-color:rgba(233,30,140,0.22);}
+.pc-rank{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--teal);margin-bottom:5px;}
+.pc.red .pc-rank{color:var(--magenta);}
+.pc-amt{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.01em;}
+.pc-cur{font-size:10px;color:var(--muted);font-weight:400;}
+.info-box{
+  border-radius:9px;padding:11px 14px;font-size:12px;color:var(--muted);
+  display:flex;gap:9px;align-items:flex-start;margin-top:8px;
+}
+.info-warn{border:1px solid rgba(255,184,0,0.2);background:rgba(255,184,0,0.05);}
+.info-teal{border:1px solid rgba(0,196,167,0.15);background:rgba(0,196,167,0.04);}
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0;position:relative;z-index:2;}
+
+/* ── CLOSING ── */
+.closing{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0;border-top:1px solid var(--border);
+  position:relative;z-index:2;margin-top:20px;
+}
+.closing-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;}
+.closing-meta{text-align:right;}
+.closing-venue{font-size:10px;color:var(--dim);}
+.closing-date{font-family:'Syne',sans-serif;font-weight:600;font-size:14px;color:var(--teal);}
+
+/* ── DESKTOP ── */
+@media(min-width:768px){
+  .section{padding:52px 72px;}
+  .cover{padding:52px 72px;}
+  .display-title{font-size:clamp(60px,8vw,88px);}
+  .eve-grid{grid-template-columns:1fr 1fr;}
+  .price-grid{grid-template-columns:repeat(5,1fr);}
+  .sched-desktop{display:grid !important;grid-template-columns:160px repeat(5,1fr);gap:6px;}
+  .sched-desktop .track-accordion{display:none;}
+  .pricing-desktop{display:grid;grid-template-columns:1fr 1fr;gap:44px;}
+  .pricing-desktop > div + div {border-left:1px solid var(--border);padding-left:44px;}
+  .guest-desktop{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+  .guest-portrait{display:flex;}
+  .nav-links a{font-size:12px;}
+}
+@media(max-width:480px){
+  .eve-grid{grid-template-columns:1fr;}
+  .price-grid{grid-template-columns:repeat(3,1fr);}
+  .meta-row{gap:0;}
+  .meta-item+.meta-item{padding-left:14px;}
+}
+
+/* portrait placeholder */
+.guest-portrait{
+  width:160px;height:160px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--navy-light),rgba(233,30,140,0.18));
+  border:2px solid rgba(233,30,140,0.28);
+  display:none;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:rgba(255,255,255,0.15);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">TASSI <em>×</em> HERNÁDI</div>
+  <div class="nav-links">
+    <a href="#cover">Infó</a>
+    <a href="#nap1">1. nap</a>
+    <a href="#nap2">2. nap</a>
+    <a href="#vendeg">Vendég</a>
+    <a href="#arak">Árak</a>
+  </div>
+</nav>
+
+<!-- ══════════ COVER ══════════ -->
+<section class="section cover" id="cover">
+  <div>
+    <div class="badge" style="margin-bottom:20px;">Q3 · 2026</div>
+    <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Negyedéves szeminárium</div>
+    <div class="display-title">
+      TASSI<br><span class="accent">×</span><br>HERNÁDI
+    </div>
+    <div style="margin-top:18px;font-size:20px;font-family:'Syne',sans-serif;font-weight:600;color:var(--muted);">Q3 SEMINAR</div>
+  </div>
+
+  <div class="cover-deco">
+    <svg width="260" height="260" viewBox="0 0 260 260" fill="none">
+      <circle cx="130" cy="130" r="125" stroke="rgba(0,196,167,0.12)" stroke-width="1"/>
+      <circle cx="130" cy="130" r="88"  stroke="rgba(233,30,140,0.12)" stroke-width="1"/>
+      <circle cx="130" cy="130" r="52"  stroke="rgba(0,196,167,0.15)" stroke-width="1"/>
+      <rect x="100" y="110" width="28" height="22" rx="6" fill="rgba(0,196,167,0.75)"/>
+      <rect x="118" y="122" width="28" height="22" rx="6" fill="rgba(233,30,140,0.80)"/>
+      <text x="106" y="125" fill="white" font-size="7" font-family="sans-serif" font-weight="700">OK!</text>
+    </svg>
+  </div>
+
+  <div class="meta-row">
+    <div class="meta-item">
+      <div class="meta-label">Helyszín</div>
+      <div class="meta-value">Aquaworld Hotel</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">1. nap</div>
+      <div class="meta-value" style="color:var(--teal);">2026. 07. 18.</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">2. nap</div>
+      <div class="meta-value" style="color:var(--magenta);">2026. 07. 19.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 1. NAP ══════════ -->
+<section class="section" id="nap1">
+  <div class="page-header">
+    <div class="badge" style="margin-bottom:12px;">2026. 07. 18. · Szombat</div>
+    <div class="page-title">1. nap — Előadások</div>
+    <div class="page-sub">Aquaworld Hotel · Konferenciaterem</div>
+  </div>
+
+  <div class="meals">
+    <div class="meal">☕ Érkezés: <strong>09:00–10:00</strong></div>
+    <div class="meal">🍽 Ebéd: <strong>12:15–13:15</strong></div>
+    <div class="meal">☕ Kávészünet: <strong>11:15 · 14:15 · 15:30</strong></div>
+  </div>
+
+  <!-- TRACK: KEZDŐ -->
+  <div class="track">
+    <div class="track-head open" onclick="toggleTrack(this)">
+      <div class="track-head-left">
+        <div class="tdot" style="background:var(--teal);"></div>
+        <div>
+          <div class="track-name" style="color:var(--teal);">Kezdő</div>
+          <div class="track-sub">R1 – R2 / R3</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="track-body open">
+      <div class="session">
+        <div class="session-time">10:00–11:00</div>
+        <div class="session-content">
+          <div class="session-title">Én márka építése</div>
+          <div class="session-speaker">Időpont-egyeztetés, ajánláskérés · Farkas Nikolett · Szabó Noémi</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">11:15–12:15</div>
+        <div class="session-content">
+          <div class="session-title">Ajánlás és ügyfélkör bővítése</div>
+          <div class="session-speaker">Farkas Nikolett · Szabó Noémi</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">13:15–14:15</div>
+        <div class="session-content">
+          <div class="session-title">Tanácsadási tippek</div>
+          <div class="session-speaker">Steinmetz Edvard</div>
+        </div>
+      </div>
+      <div class="session shared">
+        <div class="session-time">14:30–15:30</div>
+        <div class="session-content">
+          <div class="session-title">Judik Tamás — My OVB</div>
+          <div class="session-speaker" style="color:var(--muted);">Közös előadás · minden track együtt</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">15:45–16:45</div>
+        <div class="session-content">
+          <div class="session-title">Karrier számokkal, csapatépítési módszerek</div>
+          <div class="session-speaker">Felber Dominik</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACK: R4-R5 -->
+  <div class="track">
+    <div class="track-head" onclick="toggleTrack(this)">
+      <div class="track-head-left">
+        <div class="tdot" style="background:#7B61FF;"></div>
+        <div>
+          <div class="track-name" style="color:#7B61FF;">Tanácsadók</div>
+          <div class="track-sub">R4 – R5</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="track-body">
+      <div class="session">
+        <div class="session-time">10:00–11:00</div>
+        <div class="session-content">
+          <div class="session-title">Csapatépítés — miértek és hogyanok</div>
+          <div class="session-speaker">Vincze Tamás · Szekér Szilvia</div>
+        </div>
+      </div>
+      <div class="session highlight-teal">
+        <div class="session-time">11:15–12:15</div>
+        <div class="session-content">
+          <div class="session-title">Passzív jövedelem — BEPRO forradalom</div>
+          <div class="session-speaker">Horváth Tamás</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">13:15–14:15</div>
+        <div class="session-content">
+          <div class="session-title">Értékpapírszámla — hogyan fektessünk be könnyedén?</div>
+          <div class="session-speaker">Csikós M. · Oldal PG</div>
+        </div>
+      </div>
+      <div class="session shared">
+        <div class="session-time">14:30–15:30</div>
+        <div class="session-content">
+          <div class="session-title">Judik Tamás — My OVB</div>
+          <div class="session-speaker" style="color:var(--muted);">Közös előadás · minden track együtt</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">15:45–16:45</div>
+        <div class="session-content">
+          <div class="session-title">Vezetési tippek, tanácsok, módszerek</div>
+          <div class="session-speaker">Judik Tamás</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACK: GST-BL -->
+  <div class="track">
+    <div class="track-head" onclick="toggleTrack(this)">
+      <div class="track-head-left">
+        <div class="tdot" style="background:var(--magenta);"></div>
+        <div>
+          <div class="track-name" style="color:var(--magenta);">GST – BL</div>
+          <div class="track-sub">Group Supervisor</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="track-body">
+      <div class="session">
+        <div class="session-time">10:00–11:00</div>
+        <div class="session-content">
+          <div class="session-title">Csapatépítés — miértek és hogyanok</div>
+          <div class="session-speaker">Vincze Tamás · Szekér Szilvia</div>
+        </div>
+      </div>
+      <div class="session highlight-teal">
+        <div class="session-time">11:15–12:15</div>
+        <div class="session-content">
+          <div class="session-title">Passzív jövedelem — BEPRO forradalom</div>
+          <div class="session-speaker">Horváth Tamás</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">13:15–14:15</div>
+        <div class="session-content">
+          <div class="session-title">Személyes beszélgetés — a nehéz PG</div>
+          <div class="session-speaker">Hernádi István</div>
+        </div>
+      </div>
+      <div class="session shared">
+        <div class="session-time">14:30–15:30</div>
+        <div class="session-content">
+          <div class="session-title">Judik Tamás — My OVB</div>
+          <div class="session-speaker" style="color:var(--muted);">Közös előadás · minden track együtt</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">15:45–16:45</div>
+        <div class="session-content">
+          <div class="session-title">Vezetési tippek, tanácsok, módszerek</div>
+          <div class="session-speaker">Judik Tamás</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACK: BD-RD-LD -->
+  <div class="track">
+    <div class="track-head" onclick="toggleTrack(this)">
+      <div class="track-head-left">
+        <div class="tdot" style="background:#FF8C42;"></div>
+        <div>
+          <div class="track-name" style="color:#FF8C42;">BD – RD – LD</div>
+          <div class="track-sub">Felsővezető</div>
+        </div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+    <div class="track-body">
+      <div class="session">
+        <div class="session-time">10:00–11:00</div>
+        <div class="session-content">
+          <div class="session-title">Menedzsment, kontroll, onboarding</div>
+          <div class="session-speaker">Gentischer Richárd</div>
+        </div>
+      </div>
+      <div class="session highlight-teal">
+        <div class="session-time">11:15–12:15</div>
+        <div class="session-content">
+          <div class="session-title">Passzív jövedelem — BEPRO forradalom</div>
+          <div class="session-speaker">Horváth Tamás</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">13:15–14:15</div>
+        <div class="session-content">
+          <div class="session-title">Személyes beszélgetés — a nehéz PG</div>
+          <div class="session-speaker">Hernádi István</div>
+        </div>
+      </div>
+      <div class="session shared">
+        <div class="session-time">14:30–15:30</div>
+        <div class="session-content">
+          <div class="session-title">Judik Tamás — My OVB</div>
+          <div class="session-speaker" style="color:var(--muted);">Közös előadás · minden track együtt</div>
+        </div>
+      </div>
+      <div class="session">
+        <div class="session-time">15:45–16:45</div>
+        <div class="session-content">
+          <div class="session-title">Vezetési tippek, tanácsok, módszerek</div>
+          <div class="session-speaker">Judik Tamás</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTE -->
+  <div class="page-sub" style="margin-top:20px;margin-bottom:8px;">🌙 Esti program</div>
+  <div class="eve-grid">
+    <div class="eve-card eve-teal">
+      <div class="eve-label" style="color:var(--teal);">16:45 – 19:30</div>
+      <div class="eve-name">🏊 Wellness</div>
+      <div class="eve-desc">Medencék, szaunák, relaxáció. Kötetlen program a nap után.</div>
+    </div>
+    <div class="eve-card eve-mag">
+      <div class="eve-label" style="color:var(--magenta);">19:30 – 21:30</div>
+      <div class="eve-name">🍽 Vacsora</div>
+      <div class="eve-desc">Svédasztalos vacsora, utána bár és csapatépítő.</div>
+      <div class="tip-box">💡 Érdemes plusz ruhaszettel készülni!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 2. NAP ══════════ -->
+<section class="section" id="nap2">
+  <div class="page-header">
+    <div class="badge" style="margin-bottom:12px;">2026. 07. 19. · Vasárnap</div>
+    <div class="page-title">2. nap — Tassi igazgatóság</div>
+    <div class="page-sub">Aquaworld Hotel · Csak Tassi csoport: Vezető + R4–R5</div>
+  </div>
+
+  <div class="meals">
+    <div class="meal">🥐 Reggeli + kijelentkezés: <strong>08:00–10:00</strong></div>
+    <div class="meal">🍽 Ebéd: <strong>12:15–13:15</strong></div>
+    <div class="meal">☕ Kávészünet: <strong>11:00 · 14:15 · 15:30</strong></div>
+  </div>
+
+  <div class="trening-card">
+    <div class="trening-label">Teljes nap · Zárt tréning · Vezető + R4–R5</div>
+    <div class="trening-title">A sikeres kisugárzás elérése</div>
+    <div class="trening-desc">Előadó: <strong style="color:var(--white);">Budai Gergely</strong> — 5 egyenként 60 perces blokk, kávészünetekkel tagolva.</div>
+  </div>
+
+  <div style="margin-top:20px;position:relative;z-index:2;">
+    <div class="block-row">
+      <div class="block-time">10:00–11:00</div>
+      <div class="block-content"><div class="block-title">A sikeres kisugárzás elérése</div><div class="session-speaker">Budai Gergely · 1. blokk</div></div>
+    </div>
+    <div class="block-row" style="opacity:0.5;">
+      <div class="block-time">11:00–11:15</div>
+      <div class="block-content"><div class="block-break">☕ Kávészünet</div></div>
+    </div>
+    <div class="block-row">
+      <div class="block-time">11:15–12:15</div>
+      <div class="block-content"><div class="block-title">A sikeres kisugárzás elérése</div><div class="session-speaker">Budai Gergely · 2. blokk</div></div>
+    </div>
+    <div class="block-row" style="opacity:0.5;">
+      <div class="block-time">12:15–13:15</div>
+      <div class="block-content"><div class="block-break">🍽 Ebéd</div></div>
+    </div>
+    <div class="block-row">
+      <div class="block-time">13:15–14:15</div>
+      <div class="block-content"><div class="block-title">A sikeres kisugárzás elérése</div><div class="session-speaker">Budai Gergely · 3. blokk</div></div>
+    </div>
+    <div class="block-row" style="opacity:0.5;">
+      <div class="block-time">14:15–14:30</div>
+      <div class="block-content"><div class="block-break">☕ Kávészünet</div></div>
+    </div>
+    <div class="block-row">
+      <div class="block-time">14:30–15:30</div>
+      <div class="block-content"><div class="block-title">A sikeres kisugárzás elérése</div><div class="session-speaker">Budai Gergely · 4. blokk</div></div>
+    </div>
+    <div class="block-row" style="opacity:0.5;">
+      <div class="block-time">15:30–15:45</div>
+      <div class="block-content"><div class="block-break">☕ Kávészünet</div></div>
+    </div>
+    <div class="block-row">
+      <div class="block-time">15:45–16:45</div>
+      <div class="block-content"><div class="block-title">A sikeres kisugárzás elérése</div><div class="session-speaker">Budai Gergely · 5. blokk</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ VENDÉGELŐADÓ ══════════ -->
+<section class="section" id="vendeg">
+  <div class="page-header">
+    <div class="badge" style="margin-bottom:12px;">Különleges program</div>
+    <div class="page-title">Vendégelőadó</div>
+    <div class="page-sub">2. nap · Tassi igazgatóság · Vezető + R4–R5</div>
+  </div>
+
+  <div class="guest-desktop" style="position:relative;z-index:2;">
+    <div class="guest-card">
+      <div class="guest-name">Budai Gergely</div>
+      <div class="guest-role">Vezetői tréner · Kommunikációs szakértő</div>
+      <div class="guest-bio">
+        Évek óta dolgozik értékesítési és pénzügyi csapatokkal. Tréningje azt mutatja meg, hogyan érheted el azt a
+        <strong style="color:var(--white);">természetes kisugárzást</strong>, ami vonzza az ügyfeleket,
+        erősíti a csapat bizalmát és tartós karriereredményeket teremt.
+      </div>
+      <div class="guest-badges">
+        <div class="gbadge"><div class="gbadge-t">Kisugárzás</div><div class="gbadge-s">Perszonális brand</div></div>
+        <div class="gbadge"><div class="gbadge-t">Vezetői hatás</div><div class="gbadge-s">Motiváció & irány</div></div>
+        <div class="gbadge"><div class="gbadge-t">Kommunikáció</div><div class="gbadge-s">Hiteles jelenlét</div></div>
+      </div>
+    </div>
+    <div class="guest-portrait">BG</div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="page-sub" style="margin-bottom:10px;">🌙 Esti program · 2026. 07. 18.</div>
+  <div class="eve-grid">
+    <div class="eve-card eve-teal">
+      <div class="eve-label" style="color:var(--teal);">16:45 – 19:30</div>
+      <div class="eve-name">🏊 Wellness</div>
+      <div class="eve-desc">Medencék, szaunák, relaxáció az Aquaworldben.</div>
+    </div>
+    <div class="eve-card eve-mag">
+      <div class="eve-label" style="color:var(--magenta);">19:30 – 21:30</div>
+      <div class="eve-name">🍽 Vacsora</div>
+      <div class="eve-desc">Svédasztalos vacsora, utána bár és csapatépítő.</div>
+      <div class="tip-box">💡 Érdemes plusz ruhaszettel készülni!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ÁRAK ══════════ -->
+<section class="section" id="arak">
+  <div class="page-header">
+    <div class="badge" style="margin-bottom:12px;">Részvételi díjak</div>
+    <div class="page-title">Önrészek</div>
+    <div class="page-sub">R1 – LD · minden szint</div>
+  </div>
+
+  <div class="pricing-desktop pricing-section">
+
+    <!-- TASSI 2 NAPOS -->
+    <div class="pricing-block">
+      <div class="pricing-title">Tassi igazgatóság</div>
+      <div class="pricing-sub">2 napos részvétel · R1 – LD</div>
+      <div class="svc-row">
+        <div class="svc svc-t">Szállás</div>
+        <div class="svc svc-t">Reggeli</div>
+        <div class="svc svc-t">2× Ebéd</div>
+        <div class="svc svc-t">Vacsora</div>
+        <div class="svc svc-t">Wellness</div>
+        <div class="svc svc-t">Kávé & süti</div>
+        <div class="svc svc-t">Előadók díja</div>
+      </div>
+      <div class="total-line">
+        <span class="total-label">Teljes költség / fő:</span>
+        <span class="total-amt">120 000 Ft</span>
+      </div>
+      <div class="price-grid">
+        <div class="pc"><div class="pc-rank">R1–R2</div><div class="pc-amt">15<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">R3</div><div class="pc-amt">20<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">R4/VR4</div><div class="pc-amt">55<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">R5/VR5</div><div class="pc-amt">25<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc hi"><div class="pc-rank">GS mérő</div><div class="pc-amt">45<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc hi"><div class="pc-rank">GS</div><div class="pc-amt">55<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">BL</div><div class="pc-amt">70<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">BD</div><div class="pc-amt">90<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">RD</div><div class="pc-amt">150<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc red"><div class="pc-rank">LD</div><div class="pc-amt">250<span class="pc-cur"> eFt</span></div></div>
+      </div>
+      <div class="info-box info-warn">
+        <span style="color:#FFB800;flex-shrink:0;">⚠️</span>
+        <span>Ha a munkatárs <strong style="color:var(--white);">nem teljesítette</strong> a negyedéves 150 ES-t, a teljes 120 000 Ft kerül levonásra.</span>
+      </div>
+      <div class="info-box info-teal">
+        <span style="color:var(--teal);flex-shrink:0;">ℹ</span>
+        <span>Az önrészt a következő havi elszámolás során vonják le. Minden munkatárs számlát kap.</span>
+      </div>
+    </div>
+
+    <!-- HERNÁDI 1 NAPOS -->
+    <div class="pricing-block">
+      <div class="pricing-title">Hernádi struktúra</div>
+      <div class="pricing-sub">1 napos részvétel · R1 – LD</div>
+      <div class="svc-row">
+        <div class="svc svc-m">1× Ebéd</div>
+        <div class="svc svc-m">Kávé & süti</div>
+        <div class="svc svc-m">Előadók díja</div>
+      </div>
+      <div class="total-line">
+        <span class="total-label">Teljes költség / fő:</span>
+        <span class="total-amt">60 000 Ft</span>
+      </div>
+      <div class="price-grid">
+        <div class="pc"><div class="pc-rank">R1–R2</div><div class="pc-amt">14<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">R3</div><div class="pc-amt">16<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">R4/R5</div><div class="pc-amt">20<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc hi"><div class="pc-rank">GS mérő</div><div class="pc-amt">20<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc hi"><div class="pc-rank">GS</div><div class="pc-amt">30<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">BL</div><div class="pc-amt">40<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">BD</div><div class="pc-amt">50<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc"><div class="pc-rank">RD</div><div class="pc-amt">60<span class="pc-cur"> eFt</span></div></div>
+        <div class="pc red"><div class="pc-rank">LD</div><div class="pc-amt">120<span class="pc-cur"> eFt</span></div></div>
+      </div>
+      <div class="info-box info-warn">
+        <span style="color:#FFB800;flex-shrink:0;">⚠️</span>
+        <span>Ha a munkatárs <strong style="color:var(--white);">nem teljesítette</strong> a negyedéves 150 ES-t, a teljes 60 000 Ft kerül levonásra.</span>
+      </div>
+      <div class="info-box info-teal">
+        <span style="color:var(--teal);flex-shrink:0;">ℹ</span>
+        <span>Az önrészt a következő havi elszámolás során vonják le. Minden munkatárs számlát kap.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="closing">
+    <div class="closing-title">Hamarosan találkozunk! <span style="color:var(--magenta);">🚀</span></div>
+    <div class="closing-meta">
+      <div class="closing-venue">Aquaworld Hotel</div>
+      <div class="closing-date">2026. 07. 18–19.</div>
+    </div>
+  </div>
+</section>
+
+<script>
+function toggleTrack(head){
+  head.classList.toggle('open');
+  const body = head.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{
+    if(window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navLinks.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href')==='#'+current);
+  });
+},{passive:true});
+</script>
+</body>
+</html>
